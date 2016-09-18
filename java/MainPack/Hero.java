@@ -2,12 +2,7 @@ package MainPack;
 
 class Hero extends Creature{
 
-     /**
-      * @param strength
-      * @param constitution
-      * @param agility
-      * @param aFlag for track the positions(1 - normal, 2 - attack, 3 - defence)
-      */
+    // TODO: 18.09.2016 Add implementation of races
 
     Hero(int strength, int constitution, int agility, String _name, int _exp, int _lvl, int aFlag)
     {
@@ -19,8 +14,6 @@ class Hero extends Creature{
         lvl = _lvl;
 
         flag = aFlag;
-
-
     }
 
     public int getCurrentExp() {
@@ -39,7 +32,7 @@ class Hero extends Creature{
         return lvl;
     }
 
-    public int getFlag() {
+    int getFlag() {
         return flag;
     }
 
@@ -52,7 +45,7 @@ class Hero extends Creature{
         transferStats();
     }
 
-    public void attackPosition()
+    void attackPosition()
     {
         if (flag != 2)
         {
@@ -68,7 +61,7 @@ class Hero extends Creature{
         }
     }
 
-    public void defencePosition()
+    void defencePosition()
     {
         if (flag != 3)
         {

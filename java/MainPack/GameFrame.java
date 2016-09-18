@@ -19,7 +19,6 @@ class GameFrame extends JFrame{
         Dimension dim = kit.getScreenSize();
         setBounds(dim.width /4 ,dim.height / 4 ,dim.width / 2, dim.height / 2);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
         setResizable(true);
 
 
@@ -125,7 +124,7 @@ logger.info("Constructor- no errors");
         group.add(defencePosition);
         radioButtonsPanel.add(defencePosition);
 
-        restPhase.add(BorderLO.NORTH, radioButtonsPanel);
+        restPhase.add(BorderLayout.NORTH, radioButtonsPanel);
 
 
         JPanel buttonsPanel = new JPanel();
@@ -168,7 +167,7 @@ logger.info("Constructor- no errors");
 
 
 
-        restPhase.add(BorderLO.SOUTH, buttonsPanel);
+        restPhase.add(BorderLayout.SOUTH, buttonsPanel);
         controlPanel.add(restPhase, "RestPhase");
 
         logger.info("RestPhase end");
@@ -198,7 +197,7 @@ logger.info("Constructor- no errors");
         enemyAttack = new JLabel(mainLogic.getEnemy().getAttack()+ " attack points");
         battleInformationPanel.add(enemyAttack);
 
-        attackPhase.add(BorderLO.CENTER, battleInformationPanel);
+        attackPhase.add(BorderLayout.CENTER, battleInformationPanel);
 
 
         JPanel buttonPanel = new JPanel();
@@ -236,7 +235,7 @@ logger.info("Constructor- no errors");
         });
         buttonPanel.add(defenceButton);
 
-        attackPhase.add(BorderLO.EAST, buttonPanel);
+        attackPhase.add(BorderLayout.EAST, buttonPanel);
 
 
 
