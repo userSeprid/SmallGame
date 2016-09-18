@@ -12,10 +12,7 @@ abstract class Creature {
         constitution = aConstitution;
 
         name = aName;
-
-
-
-    }
+  }
     void transferStats()
     {
         hp = constitution * 5;
