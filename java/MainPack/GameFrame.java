@@ -53,42 +53,92 @@ logger.info("Constructor- no errors");
 
         mainLogic = new GameLogic();
 
-        heroChosePanel = new JPanel();
+        chooserPanel = new JPanel(new BorderLayout());
+
+        nameField = new JTextField("Input a name");
+        chooserPanel.add(nameField, BorderLayout.SOUTH);
+
+        raceChoosePanel = new JPanel();
+        JRadioButton human = new JRadioButton("Human", true);
+        human.addActionListener(new RaceListener());
+        raceChoosePanel.add(human);
+        JRadioButton orc = new JRadioButton("Orc");
+        orc.addActionListener(new RaceListener());
+        raceChoosePanel.add(orc);
+        JRadioButton dwarf = new JRadioButton("Dwarf");
+        dwarf.addActionListener(new RaceListener());
+        raceChoosePanel.add(dwarf);
+        JRadioButton elf = new JRadioButton("Elf");
+        elf.addActionListener(new RaceListener());
+        raceChoosePanel.add(elf);
+        JRadioButton fairy = new JRadioButton("Fairy");
+        fairy.addActionListener(new RaceListener());
+        raceChoosePanel.add(fairy);
+
+        ButtonGroup raceButtons = new ButtonGroup();
+        raceButtons.add(human);
+        raceButtons.add(orc);
+        raceButtons.add(dwarf);
+        raceButtons.add(elf);
+        raceButtons.add(fairy);
+
+        chooserPanel.add(raceChoosePanel, BorderLayout.CENTER);
+
+
+
+
+
+        heroChoosePanel = new JPanel();
         JButton firstHero = new JButton("Select Paladin");
         firstHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                mainLogic.makeAHero(1);
-                setRestPhase();
-                cardLayout.next(controlPanel);
-                logger.info("Pal selected");
+                if (nameField.getText() != null || userType != null)
+                {
+                    mainLogic.makeAHero(1, nameField.getText(), userType);
+                    setRestPhase();
+                    cardLayout.next(controlPanel);
+                    logger.info("Pal selected");
+                }
             }
         });
-        heroChosePanel.add(firstHero);
+        heroChoosePanel.add(firstHero);
+
         JButton secondHero = new JButton("Select Dwarf");
         secondHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.makeAHero(2);
-                setRestPhase();
-                cardLayout.next(controlPanel);
-                logger.info("Dwarf selected");
+
+                if (nameField.getText() != null)
+                {
+                    mainLogic.makeAHero(1, nameField.getText(), userType);
+                    setRestPhase();
+                    cardLayout.next(controlPanel);
+                    logger.info("Dwarf selected");
+                }
             }
         });
-        heroChosePanel.add(secondHero);
+        heroChoosePanel.add(secondHero);
+
         JButton thirdHero = new JButton("Select Barbarian");
         thirdHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.makeAHero(3);
-                setRestPhase();
-                cardLayout.next(controlPanel);
-                logger.info("Barb selected");
+                if (nameField.getText() != null)
+                {
+                    mainLogic.makeAHero(3, nameField.getText(), userType);
+                    setRestPhase();
+                    cardLayout.next(controlPanel);
+                    logger.info("Barb selected");
+                }
             }
         });
-        heroChosePanel.add(thirdHero);
+        heroChoosePanel.add(thirdHero);
 
-        controlPanel.add(heroChosePanel, "HeroChoseMenu");
+        chooserPanel.add(heroChoosePanel, BorderLayout.NORTH);
 
-        logger.info("heroChooser end");
+
+        controlPanel.add(chooserPanel, "HeroChoseMenu");
+
+        logger.info("Chooser end");
     }
 
 
@@ -173,7 +223,7 @@ logger.info("Constructor- no errors");
         logger.info("RestPhase end");
     }
 
-    public void setAttackPhase()
+    private void setAttackPhase()
     {
         logger.info("AttackPhase start");
 
@@ -249,6 +299,18 @@ logger.info("Constructor- no errors");
         logger.info("AttackPhase end");
     }
 
+    private class RaceListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getActionCommand().equals("Human")){userType = RaceType.Human;}
+            else if (e.getActionCommand().equals("Orc")){userType = RaceType.Orc;}
+            else if (e.getActionCommand().equals("Dwarf")){userType = RaceType.Dwarf;}
+            else if (e.getActionCommand().equals("Elf")){userType = RaceType.Elf;}
+            else if (e.getActionCommand().equals("Fairy")){userType = RaceType.Fairy;}
+        }
+    }
+
 
 
     private CardLayout cardLayout;
@@ -256,7 +318,9 @@ logger.info("Constructor- no errors");
 
     private JPanel controlPanel;
     private JPanel mainMenuPanel;
-    private JPanel heroChosePanel;
+    private JPanel chooserPanel;
+    private JPanel heroChoosePanel;
+    private JPanel raceChoosePanel;
     private JPanel restPhase;
 
     private GameLogic mainLogic;
@@ -274,7 +338,11 @@ logger.info("Constructor- no errors");
     private JLabel enemyDefence;
     private JLabel enemyAttack;
 
+    private JTextField nameField;
+
     private Logger logger;
+
+    private RaceType userType;
 
 
 }

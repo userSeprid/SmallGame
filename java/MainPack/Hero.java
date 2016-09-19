@@ -4,9 +4,10 @@ class Hero extends Creature{
 
     // TODO: 18.09.2016 Add implementation of races
 
-    Hero(int strength, int constitution, int agility, String _name, int _exp, int _lvl, int aFlag)
+    Hero(int strength, int constitution, int agility, String _name, int _exp, int _lvl,
+         int aFlag, RaceType aRace)
     {
-        super(strength, constitution, agility, _name);
+        super(strength, constitution, agility, _name, aRace);
         transferStats();
 
         currentExp = _exp;

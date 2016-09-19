@@ -2,14 +2,15 @@ package MainPack;
 
 abstract class Creature {
 
-    Creature(int aStrength, int aConstitution, int aAgility, String aName)
+    Creature(int aStrength, int aConstitution, int aAgility, String aName, RaceType aRace)
 
 
     {
-        constitution = aConstitution;
-        agility = aAgility;
-        strength = aStrength;
-        constitution = aConstitution;
+        unitRace = aRace;
+
+        constitution = aConstitution +unitRace.bonusToCon;
+        agility = aAgility +unitRace.bonusToAgi;
+        strength = aStrength +unitRace.bonusToStr;
 
         name = aName;
   }
@@ -110,11 +111,13 @@ abstract class Creature {
         return hp;
     }
 
-    boolean isDead()
-    {
-        return hp <= 0;
-
+    public RaceType getUnitRace() {
+        return unitRace;
     }
+
+    boolean isDead() {return hp <= 0;}
+
+
 
     private int hp;
     private int defence;
@@ -124,6 +127,7 @@ abstract class Creature {
     private int constitution;
     private int strength;
     private int agility;
+    private RaceType unitRace;
 
 
 }
