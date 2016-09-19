@@ -22,15 +22,13 @@ class GameFrame extends JFrame{
         setResizable(true);
 
 
-
         cardLayout = new CardLayout();
         controlPanel = new JPanel();
         controlPanel.setLayout(cardLayout);
         add(controlPanel);
 
 
-
-        mainMenuPanel = new JPanel();
+        JPanel mainMenuPanel = new JPanel();
         JButton gameStarter = new JButton("Start Journey");
         gameStarter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -53,12 +51,12 @@ logger.info("Constructor- no errors");
 
         mainLogic = new GameLogic();
 
-        chooserPanel = new JPanel(new BorderLayout());
+        JPanel chooserPanel = new JPanel(new BorderLayout());
 
         nameField = new JTextField("Input a name");
-        chooserPanel.add(nameField, BorderLayout.SOUTH);
+        chooserPanel.add(nameField, BorderLayout.NORTH);
 
-        raceChoosePanel = new JPanel();
+        JPanel raceChoosePanel = new JPanel();
         JRadioButton human = new JRadioButton("Human", true);
         human.addActionListener(new RaceListener());
         raceChoosePanel.add(human);
@@ -83,12 +81,10 @@ logger.info("Constructor- no errors");
         raceButtons.add(fairy);
 
         chooserPanel.add(raceChoosePanel, BorderLayout.CENTER);
+        userType = RaceType.Human;
 
 
-
-
-
-        heroChoosePanel = new JPanel();
+        JPanel heroChoosePanel = new JPanel();
         JButton firstHero = new JButton("Select Paladin");
         firstHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -133,7 +129,7 @@ logger.info("Constructor- no errors");
         });
         heroChoosePanel.add(thirdHero);
 
-        chooserPanel.add(heroChoosePanel, BorderLayout.NORTH);
+        chooserPanel.add(heroChoosePanel, BorderLayout.SOUTH);
 
 
         controlPanel.add(chooserPanel, "HeroChoseMenu");
@@ -147,7 +143,7 @@ logger.info("Constructor- no errors");
         logger.info("setRestPhase starts");
 
 
-        restPhase = new JPanel();
+        JPanel restPhase = new JPanel();
         BorderLayout BorderLO = new BorderLayout();
         restPhase.setLayout(BorderLO);
         JPanel radioButtonsPanel = new JPanel();
@@ -158,7 +154,7 @@ logger.info("Constructor- no errors");
             public void actionPerformed(ActionEvent e) {
                 mainLogic.getPlayer().transferStats();
                 mainLogic.getPlayer().attackPosition();
-                logger.info("Change hero position to "+mainLogic.getPlayer().getFlag());
+                logger.info("Change hero position to "+mainLogic.getPlayer().getBattleMode());
             }
         });
         group.add(attackPosition);
@@ -168,7 +164,7 @@ logger.info("Constructor- no errors");
             public void actionPerformed(ActionEvent e) {
                 mainLogic.getPlayer().transferStats();
                 mainLogic.getPlayer().defencePosition();
-                logger.info("Change hero position to "+mainLogic.getPlayer().getFlag());
+                logger.info("Change hero position to "+mainLogic.getPlayer().getBattleMode());
             }
         });
         group.add(defencePosition);
@@ -179,7 +175,7 @@ logger.info("Constructor- no errors");
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(2,2,20,20));
-        statsButton = new JButton("Check your stats");
+        JButton statsButton = new JButton("Check your stats");
         statsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Hero playerClone = mainLogic.getPlayer();
@@ -190,7 +186,7 @@ logger.info("Constructor- no errors");
         });
         buttonsPanel.add(statsButton);
 
-        mapButton = new JButton("Open a map");
+        JButton mapButton = new JButton("Open a map");
         mapButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -198,7 +194,7 @@ logger.info("Constructor- no errors");
         });
         buttonsPanel.add(mapButton);
 
-        inventoryButton = new JButton("Inspect an inventory");
+        JButton inventoryButton = new JButton("Inspect an inventory");
         inventoryButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -206,7 +202,7 @@ logger.info("Constructor- no errors");
         });
         buttonsPanel.add(inventoryButton);
 
-        advanceButton = new JButton("Advance");
+        JButton advanceButton = new JButton("Advance");
         advanceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setAttackPhase();
@@ -214,7 +210,6 @@ logger.info("Constructor- no errors");
             }
         });
         buttonsPanel.add(advanceButton);
-
 
 
         restPhase.add(BorderLayout.SOUTH, buttonsPanel);
@@ -234,31 +229,28 @@ logger.info("Constructor- no errors");
 
 
         JPanel battleInformationPanel= new JPanel();
-        battleInformationPanel.setLayout(new GridLayout(5, 1, 10, 10));
 
-        playerNameAndHp = new JLabel(mainLogic.getPlayer().getName()+" have " + mainLogic.getPlayer().getHp() + " hp.");
-        battleInformationPanel.add(playerNameAndHp);
-        enemyName = new JLabel(mainLogic.getEnemy().getName()+" have:");
-        battleInformationPanel.add(enemyName);
-        enemyHp = new JLabel(mainLogic.getEnemy().getHp()+" hp.");
-        battleInformationPanel.add(enemyHp);
-        enemyDefence = new JLabel(mainLogic.getEnemy().getDefence()+" defence points");
-        battleInformationPanel.add(enemyDefence);
-        enemyAttack = new JLabel(mainLogic.getEnemy().getAttack()+ " attack points");
-        battleInformationPanel.add(enemyAttack);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(2, 2, 10,10));
+
+        battleInformationHp = new JTextArea(30, 2);
+        battleInformationHp.setEditable(false);
+        battleInformationHp.setText(getHpStatus());
+
+        JTextArea battleInformationEnemyStats = new JTextArea(30, 2);
+        battleInformationEnemyStats.setEditable(false);
+        battleInformationEnemyStats.setText(getOtherStatus());
+
 
         attackPhase.add(BorderLayout.CENTER, battleInformationPanel);
 
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 1, 10,10));
-
-
-        attackButton = new JButton("Attack an enemy");
+        JButton attackButton = new JButton("Attack an enemy");
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainLogic.getEnemy().takeDamageFromAttack(mainLogic.getPlayer().getAttack());
-                enemyHp.setText(mainLogic.getEnemy().getHp()+" hp.");
+                battleInformationHp.setText(getHpStatus());
                 logger.info("Attack, enemyHp:"+mainLogic.getEnemy().getHp());
                 if (mainLogic.getEnemy().isDead())
                 {
@@ -266,37 +258,50 @@ logger.info("Constructor- no errors");
 
                 }
                 mainLogic.getPlayer().takeDamageFromAttack(mainLogic.getEnemy().getAttack());
-                playerNameAndHp.setText(mainLogic.getPlayer().getName()+" have " + mainLogic.getPlayer().getHp() + " hp.");
+                battleInformationHp.setText(getHpStatus());
                 logger.info("Attack, playerHp:"+mainLogic.getPlayer().getHp());
                 if (mainLogic.getPlayer().isDead()){cardLayout.show(controlPanel, "MainMenu");}
 
 
             }
         });
-        buttonPanel.add(attackButton);
-        defenceButton = new JButton("Defend from enemy strikes");
+        JButton defenceButton = new JButton("Defend from enemy strikes");
         defenceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainLogic.getPlayer().takeDamageWhileDefending(mainLogic.getEnemy().getAttack());
-                playerNameAndHp.setText(mainLogic.getPlayer().getName()+" have " + mainLogic.getPlayer().getHp() + " hp.");
+                battleInformationHp.setText(getHpStatus());
                 logger.info("Attack, playerHp:"+mainLogic.getPlayer().getHp());
                 if (mainLogic.getPlayer().isDead()){cardLayout.show(controlPanel, "MainMenu");}
             }
         });
+
+
+        buttonPanel.add(battleInformationHp);
+        buttonPanel.add(attackButton);
+        buttonPanel.add(battleInformationEnemyStats);
         buttonPanel.add(defenceButton);
 
         attackPhase.add(BorderLayout.EAST, buttonPanel);
 
-
-
-
-
         repaint();
-
 
         controlPanel.add(attackPhase, "AttackPhase");
 
         logger.info("AttackPhase end");
+    }
+
+    private String getHpStatus()
+    {
+        return mainLogic.getPlayer().getName() + " have: " +
+                mainLogic.getPlayer().getHp() + " hp.\n" + mainLogic.getEnemy().getName() +
+                " have: " + mainLogic.getEnemy().getHp() + " hp";
+    }
+
+    private String getOtherStatus()
+    {
+        return mainLogic.getEnemy().getName() + "have: \n" +
+                "Agi= " + mainLogic.getEnemy().getAgility() + " Str= " + mainLogic.getEnemy().getStrength() +
+                " Con= "+ mainLogic.getEnemy().getConstitution();
     }
 
     private class RaceListener implements ActionListener
@@ -312,37 +317,16 @@ logger.info("Constructor- no errors");
     }
 
 
-
     private CardLayout cardLayout;
-
-
     private JPanel controlPanel;
-    private JPanel mainMenuPanel;
-    private JPanel chooserPanel;
-    private JPanel heroChoosePanel;
-    private JPanel raceChoosePanel;
-    private JPanel restPhase;
 
     private GameLogic mainLogic;
 
-    private JButton statsButton;
-    private JButton inventoryButton;
-    private JButton mapButton;
-    private JButton advanceButton;
-    private JButton attackButton;
-    private JButton defenceButton;
-
-    private JLabel playerNameAndHp;
-    private JLabel enemyName;
-    private JLabel enemyHp;
-    private JLabel enemyDefence;
-    private JLabel enemyAttack;
-
     private JTextField nameField;
-
+    private JTextArea battleInformationHp;
     private Logger logger;
-
     private RaceType userType;
+
 
 
 }

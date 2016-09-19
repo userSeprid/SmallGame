@@ -2,11 +2,12 @@ package MainPack;
 
 abstract class Creature {
 
-    Creature(int aStrength, int aConstitution, int aAgility, String aName, RaceType aRace)
+    Creature(int aStrength, int aConstitution, int aAgility, String aName, RaceType aRace, BattleMode mode)
 
 
     {
         unitRace = aRace;
+        battleMode = mode;
 
         constitution = aConstitution +unitRace.bonusToCon;
         agility = aAgility +unitRace.bonusToAgi;
@@ -54,6 +55,33 @@ abstract class Creature {
 
     }
 
+    void attackPosition()
+    {
+        if (battleMode == BattleMode.defencePosition)
+        {
+            int penalty = getDefence() / 105 * 5;
+            setDefence(getDefence() - penalty);
+
+            int bonus = getAttack() / 10;
+            setAttack(bonus + getAttack());
+            battleMode = BattleMode.attackPosition;
+        }
+    }
+
+    void defencePosition()
+    {
+        if (battleMode == BattleMode.attackPosition)
+        {
+            int bonus = getDefence() / 5;
+            setDefence(getDefence() + bonus);
+
+            int penalty = getAttack() / 11;
+            setAttack(getAttack() - penalty);
+            battleMode = BattleMode.defencePosition;
+        }
+    }
+
+
 
     void setAgility(int agility) {
         this.agility = agility;
@@ -67,11 +95,11 @@ abstract class Creature {
         this.strength = strength;
     }
 
-    void setAttack(int attack) {
+    private void setAttack(int attack) {
         this.attack = attack;
     }
 
-    void setDefence(int defence) {
+    private void setDefence(int defence) {
         this.defence = defence;
     }
 
@@ -111,8 +139,12 @@ abstract class Creature {
         return hp;
     }
 
-    public RaceType getUnitRace() {
+    RaceType getUnitRace() {
         return unitRace;
+    }
+
+    BattleMode getBattleMode() {
+        return battleMode;
     }
 
     boolean isDead() {return hp <= 0;}
@@ -128,6 +160,7 @@ abstract class Creature {
     private int strength;
     private int agility;
     private RaceType unitRace;
+    private BattleMode battleMode;
 
 
 }

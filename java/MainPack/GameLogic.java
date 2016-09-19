@@ -9,11 +9,10 @@ class GameLogic {
 
     void makeAHero(int profession, String name, RaceType race)
         {
-            // TODO: 18.09.2016 Make possible to get name from player.
 
-            if (profession == 1) {player = new Hero(5, 22, 8, name, 0, 1, 1, race);
-            } else if (profession == 2) {player = new Hero(6, 17, 12, name, 0, 1, 1, race);
-            } else if (profession == 3) {player = new Hero(10, 500, 6, name, 0, 1, 1, race);
+            if (profession == 1) {player = new Hero(5, 22, 8, name, 0, 1, race, BattleMode.attackPosition);
+            } else if (profession == 2) {player = new Hero(6, 17, 12, name, 0, 1, race, BattleMode.attackPosition);
+            } else if (profession == 3) {player = new Hero(10, 500, 6, name, 0, 1, race, BattleMode.attackPosition);
             }
 
         }
@@ -22,7 +21,7 @@ class GameLogic {
     {
         Random rand = new Random();
 
-        enemy = new Monster(8 + rand.nextInt(3), 15 + rand.nextInt(4), 2 + rand.nextInt(2), "Bakemono", RaceType.Orc);
+        enemy = new Monster(8 + rand.nextInt(3), 15 + rand.nextInt(4), 2 + rand.nextInt(2), "Bakemono", RaceType.Orc, BattleMode.attackPosition);
     }
 
     Hero getPlayer() {
