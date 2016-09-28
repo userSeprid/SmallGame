@@ -3,8 +3,6 @@ package MainPack;
 abstract class Creature {
 
     Creature(int aStrength, int aConstitution, int aAgility, String aName, RaceType aRace, BattleMode mode)
-
-
     {
         unitRace = aRace;
         battleMode = mode;

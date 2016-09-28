@@ -21,7 +21,8 @@ class GameLogic {
     {
         Random rand = new Random();
 
-        enemy = new Monster(8 + rand.nextInt(3), 15 + rand.nextInt(4), 2 + rand.nextInt(2), "Bakemono", RaceType.Orc, BattleMode.attackPosition);
+        enemy = new Monster(8 + rand.nextInt(3), 15 + rand.nextInt(4), 2 + rand.nextInt(2), "Bakemono", RaceType.Orc,
+                BattleMode.attackPosition);
     }
 
     Hero getPlayer() {

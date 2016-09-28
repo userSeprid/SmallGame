@@ -33,7 +33,7 @@ class GameFrame extends JFrame{
         gameStarter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                heroChooser();
+                heroCreationPanel();
                 cardLayout.next(controlPanel);
             }
         });
@@ -45,9 +45,9 @@ logger.info("Constructor- no errors");
 
     }
 
-    private void heroChooser()
+    private void heroCreationPanel()
     {
-        logger.info("heroChooser start");
+        logger.info("heroCreationPanel start");
 
         mainLogic = new GameLogic();
 
@@ -299,7 +299,7 @@ logger.info("Constructor- no errors");
 
     private String getOtherStatus()
     {
-        return mainLogic.getEnemy().getName() + "have: \n" +
+        return mainLogic.getEnemy().getName() + " have: \n" +
                 "Agi= " + mainLogic.getEnemy().getAgility() + " Str= " + mainLogic.getEnemy().getStrength() +
                 " Con= "+ mainLogic.getEnemy().getConstitution();
     }
