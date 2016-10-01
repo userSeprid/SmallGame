@@ -1,1 +1,8 @@
-//TODO: Implementation of races
+//TODO: Implementation of races - done(half)
+
+Notes:
+- Refactor the code according by available patterns.
+- Divide code on server and client parts by socket's using.
+- Implement using of "map".
+
+- Make a chat program.

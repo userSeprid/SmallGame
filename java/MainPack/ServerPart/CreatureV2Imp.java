@@ -1,19 +1,22 @@
-package MainPack;
+package MainPack.ServerPart;
 
-abstract class Creature {
 
-    Creature(int aStrength, int aConstitution, int aAgility, String aName, RaceType aRace, BattleMode mode)
+public class CreatureV2Imp implements CreatureV2{
+
+
+    public CreatureV2Imp(Profession unitProf, String aName, RaceType aRace)
     {
         unitRace = aRace;
-        battleMode = mode;
+        battleMode = BattleMode.attackPosition;
 
-        constitution = aConstitution +unitRace.bonusToCon;
-        agility = aAgility +unitRace.bonusToAgi;
-        strength = aStrength +unitRace.bonusToStr;
+        constitution = unitProf.con +unitRace.bonusToCon;
+        agility = unitProf.agi +unitRace.bonusToAgi;
+        strength = unitProf.str +unitRace.bonusToStr;
 
         name = aName;
-  }
-    void transferStats()
+    }
+
+    public void transferStats()
     {
         hp = constitution * 5;
         defence = agility * 3;
@@ -23,7 +26,7 @@ abstract class Creature {
     }
 
 
-    void takeDamageFromAttack(int objectAttack)
+    public void takeDamageFromAttack(int objectAttack)
     {
 
         int damage = objectAttack - defence;
@@ -38,7 +41,7 @@ abstract class Creature {
 
 
     }
-    void takeDamageWhileDefending(int objectAttack)
+    public void takeDamageWhileDefending(int objectAttack)
     {
         int bonus = defence / 4;
         int damage = objectAttack - defence + bonus;
@@ -53,7 +56,7 @@ abstract class Creature {
 
     }
 
-    void attackPosition()
+    public void attackPosition()
     {
         if (battleMode == BattleMode.defencePosition)
         {
@@ -66,7 +69,7 @@ abstract class Creature {
         }
     }
 
-    void defencePosition()
+    public void defencePosition()
     {
         if (battleMode == BattleMode.attackPosition)
         {
@@ -81,15 +84,15 @@ abstract class Creature {
 
 
 
-    void setAgility(int agility) {
+    public void setAgility(int agility) {
         this.agility = agility;
     }
 
-    void setConstitution(int constitution) {
+    public void setConstitution(int constitution) {
         this.constitution = constitution;
     }
 
-    void setStrength(int strength) {
+    public void setStrength(int strength) {
         this.strength = strength;
     }
 
@@ -103,49 +106,49 @@ abstract class Creature {
 
 
 
-    int getAgility() {
+    public int getAgility() {
         return agility;
     }
 
-    int getConstitution() {
+    public int getConstitution() {
         return constitution;
     }
 
-    int getStrength() {
+    public int getStrength() {
         return strength;
     }
 
 
-    int getAttack() {
+    public int getAttack() {
         return attack;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    int getDefence() {
+    public int getDefence() {
         return defence;
     }
 
 
-    int getMaxHp() {
+    public int getMaxHp() {
         return maxHp;
     }
 
-    int getHp() {
+    public int getHp() {
         return hp;
     }
 
-    RaceType getUnitRace() {
+    public RaceType getUnitRace() {
         return unitRace;
     }
 
-    BattleMode getBattleMode() {
+    public BattleMode getBattleMode() {
         return battleMode;
     }
 
-    boolean isDead() {return hp <= 0;}
+    public boolean isDead() {return hp <= 0;}
 
 
 
@@ -159,6 +162,4 @@ abstract class Creature {
     private int agility;
     private RaceType unitRace;
     private BattleMode battleMode;
-
-
 }

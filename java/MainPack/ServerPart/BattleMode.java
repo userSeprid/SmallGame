@@ -1,4 +1,4 @@
-package MainPack;
+package MainPack.ServerPart;
 
 
 public enum BattleMode {

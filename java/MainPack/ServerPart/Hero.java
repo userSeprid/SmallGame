@@ -1,4 +1,4 @@
-package MainPack;
+package MainPack.ServerPart;
 
 class Hero extends Creature{
 
@@ -13,6 +13,17 @@ class Hero extends Creature{
         currentExp = _exp;
         expToNextLvl = lvl * 100;
         lvl = _lvl;
+    }
+
+
+    Hero(Profession unitProf, String _name, RaceType aRace)
+    {
+        super(unitProf, _name, aRace);
+        transferStats();
+
+        currentExp = 0;
+        expToNextLvl = lvl * 100;
+        lvl = 1;
     }
 
     //TODO: Implement level system;

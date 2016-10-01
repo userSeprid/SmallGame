@@ -1,4 +1,4 @@
-package MainPack;
+package MainPack.ServerPart;
 
 class Monster extends Creature {
     Monster(int strength, int constitution, int agility, String _name, RaceType aRace, BattleMode aMode)

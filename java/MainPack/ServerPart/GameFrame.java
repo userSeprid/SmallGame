@@ -1,14 +1,27 @@
-package MainPack;
+package MainPack.ServerPart;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 class GameFrame extends JFrame{
+
+    private CardLayout cardLayout;
+    private JPanel controlPanel;
+
+    private JTextField nameField;
+    private JTextArea battleInformationHp;
+    private Logger logger;
+    private RaceType userType;
+
+    private Hero yourHero;
+    private Monster yourEnemy;
+    private CreatureSuperFactory heroFactory;
 
     GameFrame()
     {
@@ -48,8 +61,7 @@ logger.info("Constructor- no errors");
     private void heroCreationPanel()
     {
         logger.info("heroCreationPanel start");
-
-        mainLogic = new GameLogic();
+        heroFactory = CreatureFactoryProducer.getFactory("hero");
 
         JPanel chooserPanel = new JPanel(new BorderLayout());
 
@@ -85,31 +97,31 @@ logger.info("Constructor- no errors");
 
 
         JPanel heroChoosePanel = new JPanel();
-        JButton firstHero = new JButton("Select Paladin");
+        JButton firstHero = new JButton("Select Dampir");
         firstHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 if (nameField.getText() != null || userType != null)
                 {
-                    mainLogic.makeAHero(1, nameField.getText(), userType);
+                    yourHero = heroFactory.getHero(Profession.Dampir, nameField.getText(), userType);
                     setRestPhase();
                     cardLayout.next(controlPanel);
-                    logger.info("Pal selected");
+                    logger.info("Dampir selected");
                 }
             }
         });
         heroChoosePanel.add(firstHero);
 
-        JButton secondHero = new JButton("Select Dwarf");
+        JButton secondHero = new JButton("Select Paladin");
         secondHero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 if (nameField.getText() != null)
                 {
-                    mainLogic.makeAHero(1, nameField.getText(), userType);
+                    yourHero = heroFactory.getHero(Profession.Paladin, nameField.getText(), userType);
                     setRestPhase();
                     cardLayout.next(controlPanel);
-                    logger.info("Dwarf selected");
+                    logger.info("Paladin selected");
                 }
             }
         });
@@ -120,7 +132,8 @@ logger.info("Constructor- no errors");
             public void actionPerformed(ActionEvent e) {
                 if (nameField.getText() != null)
                 {
-                    mainLogic.makeAHero(3, nameField.getText(), userType);
+
+                    yourHero = heroFactory.getHero(Profession.Berserk, nameField.getText(), userType);
                     setRestPhase();
                     cardLayout.next(controlPanel);
                     logger.info("Barb selected");
@@ -152,9 +165,9 @@ logger.info("Constructor- no errors");
         JRadioButton attackPosition = new JRadioButton("Attack Position", true);
         attackPosition.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.getPlayer().transferStats();
-                mainLogic.getPlayer().attackPosition();
-                logger.info("Change hero position to "+mainLogic.getPlayer().getBattleMode());
+                yourHero.transferStats();
+                yourHero.attackPosition();
+                logger.info("Change hero position to "+yourHero.getBattleMode());
             }
         });
         group.add(attackPosition);
@@ -162,9 +175,9 @@ logger.info("Constructor- no errors");
         JRadioButton defencePosition = new JRadioButton("Defence Position", false);
         defencePosition.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.getPlayer().transferStats();
-                mainLogic.getPlayer().defencePosition();
-                logger.info("Change hero position to "+mainLogic.getPlayer().getBattleMode());
+                yourHero.transferStats();
+                yourHero.defencePosition();
+                logger.info("Change hero position to "+yourHero.getBattleMode());
             }
         });
         group.add(defencePosition);
@@ -178,10 +191,10 @@ logger.info("Constructor- no errors");
         JButton statsButton = new JButton("Check your stats");
         statsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Hero playerClone = mainLogic.getPlayer();
-                logger.info("Str:"+playerClone.getStrength()+" Con:"+playerClone.getConstitution()+
-                        " Agi: "+playerClone.getAgility()+" Atk:"+playerClone.getAttack()+" Def:"+
-                        playerClone.getDefence()+" CurHp:"+playerClone.getHp()+" MaxHp"+playerClone.getMaxHp());
+
+                logger.info("Str:"+yourHero.getStrength()+" Con:"+yourHero.getConstitution()+
+                        " Agi: "+yourHero.getAgility()+" Atk:"+yourHero.getAttack()+" Def:"+
+                        yourHero.getDefence()+" CurHp:"+yourHero.getHp()+" MaxHp"+yourHero.getMaxHp());
             }
         });
         buttonsPanel.add(statsButton);
@@ -221,12 +234,17 @@ logger.info("Constructor- no errors");
     private void setAttackPhase()
     {
         logger.info("AttackPhase start");
+        CreatureSuperFactory monsterFactory = CreatureFactoryProducer.getFactory("monster");
 
         JPanel attackPhase = new JPanel();
         BorderLayout BorderLO = new BorderLayout();
         attackPhase.setLayout(BorderLO);
-        mainLogic.makeAMonster();
 
+        //TODO : Change monster creation
+        Random rand = new Random();
+        assert monsterFactory != null;
+        yourEnemy = monsterFactory.getMonster(8 + rand.nextInt(3), 15 + rand.nextInt(4), 2 + rand.nextInt(2), "Bakemono", RaceType.Orc,
+                BattleMode.attackPosition);
 
         JPanel battleInformationPanel= new JPanel();
 
@@ -249,18 +267,18 @@ logger.info("Constructor- no errors");
         JButton attackButton = new JButton("Attack an enemy");
         attackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.getEnemy().takeDamageFromAttack(mainLogic.getPlayer().getAttack());
+                yourEnemy.takeDamageFromAttack(yourHero.getAttack());
                 battleInformationHp.setText(getHpStatus());
-                logger.info("Attack, enemyHp:"+mainLogic.getEnemy().getHp());
-                if (mainLogic.getEnemy().isDead())
+                logger.info("Attack, enemyHp:"+yourEnemy.getHp());
+                if (yourEnemy.isDead())
                 {
                     cardLayout.show(controlPanel, "RestPhase");
 
                 }
-                mainLogic.getPlayer().takeDamageFromAttack(mainLogic.getEnemy().getAttack());
+                yourHero.takeDamageFromAttack(yourEnemy.getAttack());
                 battleInformationHp.setText(getHpStatus());
-                logger.info("Attack, playerHp:"+mainLogic.getPlayer().getHp());
-                if (mainLogic.getPlayer().isDead()){cardLayout.show(controlPanel, "MainMenu");}
+                logger.info("Attack, playerHp:"+yourHero.getHp());
+                if (yourHero.isDead()){cardLayout.show(controlPanel, "MainMenu");}
 
 
             }
@@ -268,10 +286,10 @@ logger.info("Constructor- no errors");
         JButton defenceButton = new JButton("Defend from enemy strikes");
         defenceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainLogic.getPlayer().takeDamageWhileDefending(mainLogic.getEnemy().getAttack());
+                yourHero.takeDamageWhileDefending(yourEnemy.getAttack());
                 battleInformationHp.setText(getHpStatus());
-                logger.info("Attack, playerHp:"+mainLogic.getPlayer().getHp());
-                if (mainLogic.getPlayer().isDead()){cardLayout.show(controlPanel, "MainMenu");}
+                logger.info("Attack, playerHp:"+yourHero.getHp());
+                if (yourHero.isDead()){cardLayout.show(controlPanel, "MainMenu");}
             }
         });
 
@@ -292,16 +310,16 @@ logger.info("Constructor- no errors");
 
     private String getHpStatus()
     {
-        return mainLogic.getPlayer().getName() + " have: " +
-                mainLogic.getPlayer().getHp() + " hp.\n" + mainLogic.getEnemy().getName() +
-                " have: " + mainLogic.getEnemy().getHp() + " hp";
+        return yourHero.getName() + " have: " +
+                yourHero.getHp() + " hp.\n" + yourEnemy.getName() +
+                " have: " + yourEnemy.getHp() + " hp";
     }
 
     private String getOtherStatus()
     {
-        return mainLogic.getEnemy().getName() + " have: \n" +
-                "Agi= " + mainLogic.getEnemy().getAgility() + " Str= " + mainLogic.getEnemy().getStrength() +
-                " Con= "+ mainLogic.getEnemy().getConstitution();
+        return yourEnemy.getName() + " have: \n" +
+                "Agi= " + yourEnemy.getAgility() + " Str= " + yourEnemy.getStrength() +
+                " Con= "+ yourEnemy.getConstitution();
     }
 
     private class RaceListener implements ActionListener
@@ -315,18 +333,4 @@ logger.info("Constructor- no errors");
             else if (e.getActionCommand().equals("Fairy")){userType = RaceType.Fairy;}
         }
     }
-
-
-    private CardLayout cardLayout;
-    private JPanel controlPanel;
-
-    private GameLogic mainLogic;
-
-    private JTextField nameField;
-    private JTextArea battleInformationHp;
-    private Logger logger;
-    private RaceType userType;
-
-
-
 }

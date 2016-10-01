@@ -1,9 +1,12 @@
-package MainPack;
+package MainPack.ClientPart;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class GameFrameV2 {
+public class GameFrameV2 extends JFrame{
 
     private JPanel controlRanel;
 
@@ -52,5 +55,31 @@ public class GameFrameV2 {
     private JPanel mapMenu;
     private JButton closeMapButton;
     private JPanel imageHolder;
+
+    private CardLayout cardLO;
+
+
+
+
+    GameFrameV2()
+    {
+        setTitle("Beta Game");
+
+        cardLO = new CardLayout();
+        controlRanel.setLayout(cardLO);
+        controlRanel.add(mainMenu, "main");
+        controlRanel.add(heroCreationMenu, "hero");
+        controlRanel.add(gameGeneralMenu, "gameGeneral");
+        controlRanel.add(battlePhaseMenu, "battle");
+        controlRanel.add(mapMenu, "map");
+        cardLO.first(controlRanel);
+
+
+        startGameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLO.show(controlRanel, "hero");
+            }
+        });
+    }
 
 }
