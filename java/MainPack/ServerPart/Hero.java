@@ -1,6 +1,10 @@
 package MainPack.ServerPart;
 
-class Hero extends Creature{
+import MainPack.BattleMode;
+import MainPack.Profession;
+import MainPack.RaceType;
+
+class Hero extends CreatureImplementation {
 
     // TODO: 18.09.2016 Add implementation of races
 
@@ -14,7 +18,6 @@ class Hero extends Creature{
         expToNextLvl = lvl * 100;
         lvl = _lvl;
     }
-
 
     Hero(Profession unitProf, String _name, RaceType aRace)
     {

@@ -1,7 +1,7 @@
-package MainPack.ServerPart;
+package MainPack;
 
 
-enum Profession {
+public enum Profession {
     Dampir(5, 22, 8), Paladin(6, 17, 12), Berserk(10, 500, 6);
 
     int str;
@@ -13,5 +13,17 @@ enum Profession {
         str = s;
         con = c;
         agi = a;
+    }
+
+    public int getStr() {
+        return str;
+    }
+
+    public int getCon() {
+        return con;
+    }
+
+    public int getAgi() {
+        return agi;
     }
 }

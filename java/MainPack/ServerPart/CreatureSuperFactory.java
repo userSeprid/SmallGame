@@ -1,6 +1,10 @@
 package MainPack.ServerPart;
 
 
+import MainPack.BattleMode;
+import MainPack.Profession;
+import MainPack.RaceType;
+
 abstract class CreatureSuperFactory {
 
     public abstract Hero getHero(Profession unitProf, String name, RaceType race);

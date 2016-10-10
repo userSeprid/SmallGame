@@ -1,17 +1,34 @@
 package MainPack.ServerPart;
 
 
-public class CreatureV2Imp implements CreatureV2{
+import MainPack.BattleMode;
+import MainPack.Profession;
+import MainPack.RaceType;
+
+public class CreatureImplementation implements Creature {
 
 
-    public CreatureV2Imp(Profession unitProf, String aName, RaceType aRace)
+    public CreatureImplementation(Profession unitProf, String aName, RaceType aRace)
     {
         unitRace = aRace;
         battleMode = BattleMode.attackPosition;
 
-        constitution = unitProf.con +unitRace.bonusToCon;
-        agility = unitProf.agi +unitRace.bonusToAgi;
-        strength = unitProf.str +unitRace.bonusToStr;
+        constitution = unitProf.getCon() + unitRace.getBonusToCon();
+        agility = unitProf.getAgi() + unitRace.getBonusToAgi();
+        strength = unitProf.getStr() + unitRace.getBonusToStr();
+
+        name = aName;
+    }
+
+    public CreatureImplementation(int aStrength, int aConstitution, int aAgility, String aName,
+                                  RaceType aRace, BattleMode aMode)
+    {
+        unitRace = aRace;
+        battleMode = aMode;
+
+        constitution = aConstitution + unitRace.getBonusToCon();
+        agility = aAgility + unitRace.getBonusToAgi();
+        strength = aStrength + unitRace.getBonusToStr();
 
         name = aName;
     }
@@ -26,10 +43,10 @@ public class CreatureV2Imp implements CreatureV2{
     }
 
 
-    public void takeDamageFromAttack(int objectAttack)
+    public void takeDamageFromAttack(int attackerDamage)
     {
 
-        int damage = objectAttack - defence;
+        int damage = attackerDamage - defence;
 
         if (damage < 2)
         {
@@ -41,10 +58,10 @@ public class CreatureV2Imp implements CreatureV2{
 
 
     }
-    public void takeDamageWhileDefending(int objectAttack)
+    public void takeDamageWhileDefending(int attackerDamage)
     {
         int bonus = defence / 4;
-        int damage = objectAttack - defence + bonus;
+        int damage = attackerDamage - defence + bonus;
 
         if (damage < 2)
         {
@@ -55,6 +72,7 @@ public class CreatureV2Imp implements CreatureV2{
         }
 
     }
+
 
     public void attackPosition()
     {
@@ -82,6 +100,11 @@ public class CreatureV2Imp implements CreatureV2{
         }
     }
 
+
+    public void setCurrentPosition(BattleMode currentMode) {
+        if (currentMode == BattleMode.attackPosition){attackPosition();}
+        else if (currentMode == BattleMode.defencePosition){defencePosition();}
+    }
 
 
     public void setAgility(int agility) {

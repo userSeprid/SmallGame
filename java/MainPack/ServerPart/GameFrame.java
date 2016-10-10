@@ -1,5 +1,9 @@
 package MainPack.ServerPart;
 
+import MainPack.BattleMode;
+import MainPack.Profession;
+import MainPack.RaceType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
